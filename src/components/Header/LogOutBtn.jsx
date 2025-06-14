@@ -18,7 +18,7 @@ const LogOutBtn = () => {
       {!showConfirm ? (
         <button
           onClick={() => setShowConfirm(true)}
-          className="px-3 py-1 sm:px-4 sm:py-2 rounded-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 text-xs sm:text-sm md:text-base lg:text-lg"
+          className=" px-4 py-6 rounded-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 "
           aria-label="Logout"
         >
           Log out

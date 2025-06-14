@@ -4,14 +4,12 @@ const Logo = ({ width = '100px' }) => {
   return (
     <div
       className="
-       border
-       border-b-amber-50
-       px-0
-       py-2
+   
+       px-7
        sm:py:7
        sm:px5
-        font-bold
-        text-transparent
+        font-extrabold
+         
         bg-clip-text
         bg-cover
         bg-center
@@ -25,7 +23,6 @@ const Logo = ({ width = '100px' }) => {
         lg:text-6xl    /* large screens */
       "
       style={{
-        backgroundImage: "url('/src/assets/jesh.jpg')",
         width: width,
         minWidth: width, // to keep consistent sizing
         WebkitBackgroundClip: 'text',

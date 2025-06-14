@@ -30,18 +30,17 @@ function App() {
       }}
     >
       {/* Fixed Left Sidebar */}
-      <div clas>
+   
       <Header />
-</div>
+
       {/* Page Content Area */}
-     <div className="ml-20 sm:ml-40 md:ml-48 lg:ml-56 xl:ml-64 2xl:ml-72">
+<div className=''>
   <main>
     <Outlet />
   </main>
   <Footer />
 </div>
-
-    </div>
+</div>
   ) : null;
 }
 

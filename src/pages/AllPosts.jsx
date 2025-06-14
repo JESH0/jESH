@@ -1,84 +1,74 @@
-import React, { useEffect, useState } from "react";
-import AppwriteService from "../appwrite/config";
-import { Container, PostCard } from "../components";
-import { useSelector } from "react-redux";
+    import React, { useEffect, useState } from "react";
+    import AppwriteService from "../appwrite/config";
+    import { Container, PostCard } from "../components";
+    import { useSelector } from "react-redux";
 
-const AllPosts = () => {
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const AllPosts = () => {
+        const [posts, setPosts] = useState([]);
+        const [loading, setLoading] = useState(true);
+        const userData = useSelector((state) => state.auth.userData);
 
-    const userData = useSelector((state) => state.auth.userData); // ✅ Get logged-in user
+        useEffect(() => {
+            if (userData?.$id) {
+                setLoading(true);
+                AppwriteService.getPosts(userData.$id).then((posts) => {
+                    if (posts && posts.documents) {
+                        const postsWithImageUrls = posts.documents.map((post) => {
+                            const imageUrl = post.featuredimage
+                                ? AppwriteService.getFileView(post.featuredimage)
+                                : null;
+                            return {
+                                ...post,
+                                imageUrl,
+                            };
+                        });
+                        setPosts(postsWithImageUrls);
+                    } else {
+                        setPosts([]);
+                    }
+                    setLoading(false);
+                });
+            }
+        }, [userData?.$id]);
 
-    useEffect(() => {
-        // ✅ Only fetch posts if user is logged in
-        if (userData?.$id) {
-            setLoading(true); // ✅ Show loading UI on user change or re-fetch
-            AppwriteService.getPosts(userData.$id).then((posts) => {
-                if (posts && posts.documents) {
-                    const postsWithImageUrls = posts.documents.map((post) => {
-                        const imageUrl = post.featuredimage
-                            ? AppwriteService.getFileView(post.featuredimage)
-                            : null;
-                        return {
-                            ...post,
-                            imageUrl,
-                        };
-                    });
-                    setPosts(postsWithImageUrls);
-                } else {
-                    setPosts([]);
-                }
-                setLoading(false);
-            });
-        }
-    }, [userData?.$id]); // ✅ Will re-run when user logs in
+        const baseStyle = {
+            backgroundImage: "url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2232&auto=format&fit=crop')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed",
+            backgroundBlendMode: "overlay",
+            backgroundColor: "#1a1a1a", // fallback for flash
+        };
 
-    // ✅ Show loading UI
-    if (loading) {
-        return (
-            <div className="w-full py-8 mt-4 text-center bg-gray-800/800 backdrop-blur-md">
-                <Container>
-                    <div className="flex flex-wrap">
-                        <div className="p-2 w-full">
-                            <h1 className="text-2xl text-white font-bold hover:text-gray-500">
-                                Loading posts...
-                            </h1>
-                        </div>
-                    </div>
-                </Container>
-            </div>
-        );
-    }
-
-    // ✅ Show empty state
-    if (posts.length === 0) {
-        return (
-            <div className="w-full py-8 mt-4 text-center bg-gray-800/800 backdrop-blur-md">
-                <Container>
-                    <div className="flex flex-wrap">
-                        <div className="p-2 w-full">
-                            <h1 className="text-xl text-white">No posts created yet.</h1>
-                        </div>
-                    </div>
-                </Container>
-            </div>
-        );
-    }
-
-    // ✅ Show posts
-    return (
-        <div className="w-full py-8 bg-gray-800/800 backdrop-blur-md">
-            <Container>
-                <div className="flex flex-col items-center justify-center">
-                    {posts.map((post) => (
-                        <div key={post.$id} className="p-2 w-2/4">
-                            <PostCard {...post} />
-                        </div>
-                    ))}
+        if (loading) {
+            return (
+                <div className="min-h-screen pt-28 flex items-center justify-center" style={baseStyle}>
+                    <h1 className="text-white text-xl">Loading posts...</h1>
                 </div>
-            </Container>
-        </div>
-    );
-};
+            );
+        }
 
-export default AllPosts;
+        if (posts.length === 0) {
+            return (
+                <div className="min-h-screen pt-28 flex items-center justify-center" style={baseStyle}>
+                    <h1 className="text-white text-xl">No posts created yet.</h1>
+                </div>
+            );
+        }
+
+        return (
+              <div className="min-h-screen pt-28 p-4 flex items-start justify-center" style={baseStyle}>
+        <Container>
+            <div className="flex flex-wrap gap-4 py-2 px-2 justify-center">
+                {posts.map((post) => (
+                    <div key={post.$id} className="w-22 sm:w-40 md:w-48">
+                        <PostCard {...post} />
+                    </div>
+                ))}
+            </div>
+        </Container>
+    </div>
+        );
+    };
+
+    export default AllPosts;

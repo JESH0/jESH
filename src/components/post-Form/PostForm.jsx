@@ -10,14 +10,22 @@ export default function PostForm({ post }) {
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData);
 
-    const { register, handleSubmit, watch, setValue, control, getValues, formState: { errors } } = useForm({
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        control,
+        getValues,
+        formState: { errors },
+    } = useForm({
         defaultValues: {
             title: post?.title || "",
             slug: post?.$id || "",
             content: post?.content || "",
             status: post?.status || "active",
         },
-        mode: "onChange"
+        mode: "onChange",
     });
 
     useEffect(() => {
@@ -46,7 +54,6 @@ export default function PostForm({ post }) {
             }
 
             let file = null;
-
             if (data.image?.[0]) {
                 const uploaded = await appwriteService.uploadFile(data.image[0]);
                 if (!uploaded || !uploaded.$id) {
@@ -92,27 +99,29 @@ export default function PostForm({ post }) {
     }, [watch, slugTransform, setValue]);
 
     return (
-              <div 
-      className="flex items-center justify-center min-h-screen p-4"
-      style={{
-        backgroundImage: "url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2232&auto=format&fit=crop')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-   
-        backgroundBlendMode: "overlay"
-      }}
-    > 
-            <form onSubmit={handleSubmit(submit)}  className="w-full  max-w-4xl  mx-auto bg-red-800/800 backdrop-blur-md rounded-xl shadow-md overflow-hidden p-6 sm:p-8 md:p-10 border border-gray-600">
+        <div
+            className="flex items-center justify-center min-h-screen pt-28 p-4"
+            style={{
+                backgroundImage: "url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2232&auto=format&fit=crop')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundAttachment: "fixed",
+                backgroundBlendMode: "overlay",
+                backgroundColor: "#1a1a1a",
+            }}
+        >
+            <form
+                onSubmit={handleSubmit(submit)}
+                className="w-full max-w-4xl mx-auto bg-red-800/800 backdrop-blur-md rounded-xl shadow-md overflow-hidden p-6 sm:p-8 md:p-10 border border-gray-600"
+            >
                 <div className="flex flex-col lg:flex-row gap-6">
                     <div className="w-full lg:w-2/3 space-y-4">
                         <div>
                             <label className="text-sm font-medium text-gray-300">Title:</label>
                             <Input
-                             className="text-white !bg-transparent !bg-none border-0 border-b border-gray-400 focus:border-blue-500 rounded-none px-0 shadow-none outline-none [background:none] [&>input]:bg-transparent pr-8"
                                 placeholder="Post title"
                                 {...register("title", { required: true })}
-                        
+                                className="text-white !bg-transparent border-0 border-b border-gray-400 focus:border-blue-500 rounded-none px-0 shadow-none outline-none"
                             />
                         </div>
 
@@ -123,22 +132,19 @@ export default function PostForm({ post }) {
                                 onInput={(e) => {
                                     setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
                                 }}
-                             className="text-white !bg-transparent !bg-none border-0 border-b border-gray-400 focus:border-blue-500 rounded-none px-0 shadow-none outline-none [background:none] [&>input]:bg-transparent pr-8"
+                                className="text-white !bg-transparent border-0 border-b border-gray-400 focus:border-blue-500 rounded-none px-0 shadow-none outline-none"
                             />
                         </div>
 
                         <div>
-                            <label className="text-white !bg-transparent !bg-none border-0 border-b border-gray-400 focus:border-blue-500 rounded-none px-0 shadow-none outline-none [background:none] [&>input]:bg-transparent pr-8">Content:</label>
-                            <div   className="text-white !bg-transparent !bg-none border-0 border-b border-gray-400 focus:border-blue-500 rounded-none px-0 shadow-none outline-none [background:none] [&>input]:bg-transparent pr-8">
-                                <RTE
-                                 className="text-white !bg-transparent !bg-none border-0 border-b border-gray-400 focus:border-blue-500 rounded-none px-0 shadow-none outline-none [background:none] [&>input]:bg-transparent pr-8"
-                                    name="content"
-                                    control={control}
-                                    defaultValue={getValues("content")}
-                                    darkMode={true}
-                                    rules={{ required: "Content is required" }}
-                                />
-                            </div>
+                            <label className="text-sm font-medium text-gray-300">Content:</label>
+                            <RTE
+                                name="content"
+                                control={control}
+                                defaultValue={getValues("content")}
+                                darkMode={true}
+                                rules={{ required: "Content is required" }}
+                            />
                             {errors.content && (
                                 <p className="text-sm text-red-500">{errors.content.message}</p>
                             )}
@@ -150,9 +156,13 @@ export default function PostForm({ post }) {
                             <label className="text-sm font-medium text-gray-300">Featured Image</label>
                             <label htmlFor="image-upload" className="block cursor-pointer">
                                 {imagePreviewUrl ? (
-                                    <img src={imagePreviewUrl} alt="Preview" className="w-full h-48 object-cover rounded-md" />
+                                    <img
+                                        src={imagePreviewUrl}
+                                        alt="Preview"
+                                        className="w-full h-48 object-cover rounded-md"
+                                    />
                                 ) : (
-                                    <div className="w-full h-48 border border-dashed border-gray-700 flex items-center justify-center text-gray-400 bg-gray-800/800 backdrop-blur-2xl rounded-md">
+                                    <div className="w-full h-48 border border-dashed border-gray-700 flex items-center justify-center text-gray-400 bg-gray-800/80 backdrop-blur-2xl rounded-md">
                                         Click to upload image
                                     </div>
                                 )}
@@ -169,18 +179,16 @@ export default function PostForm({ post }) {
                         <div>
                             <label className="text-sm font-medium text-gray-300">Status</label>
                             <Select
-                             className="text-white !bg-transparent !bg-none border-0 border-b border-gray-400 focus:border-blue-500 rounded-none px-0 shadow-none outline-none [background:none] [&>input]:bg-transparent pr-8"
-                                options={["active", "inactive" ] }
+                                options={["active", "inactive"]}
                                 {...register("status", { required: true })}
-                              
                                 darkMode={true}
+                                className="text-white !bg-transparent border-0 border-b border-gray-400 focus:border-blue-500 rounded-none px-0 shadow-none outline-none"
                             />
                         </div>
 
                         <Button
                             type="submit"
                             className={post ? "bg-green-600 hover:bg-green-700" : "bg-white hover:bg-gray-200"}
-                      
                         >
                             {post ? "Update Post" : "Publish Post"}
                         </Button>
