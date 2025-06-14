@@ -24,36 +24,35 @@ const LogOutBtn = () => {
           Log out
         </button>
       ) : (
-       <div className="fixed top-0 sm:top-30 inset-0 flex items-center justify-center z-50  bg-gray-800/800 backdrop-blur-3xl  bg-opacity-50 px-2">
-  <div className=" bg-gray-800/800 backdrop-blur-3xl  bg-opacity-90  text-white shadow-lg rounded-md 
-                  p-4 xs:p-5 sm:p-6
-                  w-full max-w-[280px] xs:max-w-[320px] sm:max-w-xs
-                  text-xs xs:text-sm sm:text-base
-                  mx-auto">
-<div className="mt-8 xs:mt-12 sm:mt-6 md:mt-27 flex flex-col space-y-1 xs:space-y-2 sm:space-y-3">
-
+    <div className="relative inline-block">
   <button
-    onClick={handleLogout}
-    className="w-full p-2 flex justify-center text-center border border-red-400 xs:px-3 xs:py-2 sm:px-4 sm:py-3 
-              bg-gray-800/800 backdrop-blur-3xl  rounded hover:border-red-600 
-               focus:outline-none focus:ring-2 focus:ring-red-500
-               text-[10px] xs:text-xs sm:text-sm md:text-base"
+    onClick={() => setShowConfirm(true)}
+    className="logout-button-class"
   >
-    Yes
+    Logout
   </button>
-  <button
-    onClick={() => setShowConfirm(false)}
-    className="w-full p-2 flex justify-center text-center border border-blue-400  xs:px-3 xs:py-2 sm:px-4 sm:py-3 
-               bg-gray-800/800 backdrop-blur-3xl rounded  hover:border-blue-600 
-               focus:outline-none focus:ring-2 focus:ring-gray-500
-               text-[10px] xs:text-xs sm:text-sm md:text-base"
-  >
-    No
-  </button>
-</div>
 
+  {showConfirm && (
+  <div className="absolute right-0 ml-5 z-50  text-white  py-3 rounded-md shadow-md text-sm">
+  <div className="flex flex-col md:flex-row md:justify-start space-y-2 md:space-y-0 md:space-x-2">
+    <button
+      onClick={handleLogout}
+      className="w-full md:w-auto flex justify-center items-center px-6 py-2 border border-red-400 bg-red-800/80 rounded hover:border-red-600 text-xs"
+    >
+      Yes
+    </button>
+    <button
+      onClick={() => setShowConfirm(false)}
+      className="w-full md:w-auto flex justify-center items-center px-6 py-2 border border-blue-400 bg-blue-800/80 rounded hover:border-blue-600 text-xs"
+    >
+      No
+    </button>
   </div>
 </div>
+
+  )}
+</div>
+
 
       )}
     </div>
