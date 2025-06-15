@@ -155,7 +155,7 @@ const Home = () => {
             <Container>
                 <div className="flex flex-col gap-8 items-center max-w-xl mx-auto w-full">
                     {posts.map((post) => (
-                        <div key={post.$id} className="w-full  bg-gray-800/800 backdrop-blur-sm border hover:border-gray-200 rounded-xl shadow hover:shadow-md transition p-4">
+                        <div key={post.$id} className="w-full  bg-gray-800/800 backdrop-blur-sm border border-gray-400 hover:border-gray-200 rounded-xl shadow hover:shadow-md transition p-4">
                             <PostCard {...post} />
                             
                             {/* Like, Comment, Share Buttons */}
